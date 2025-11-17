@@ -10,12 +10,9 @@ import java.util.List;
 @Repository
 public interface LocalizacionGeograficaRepository extends JpaRepository<LocalizacionGeografica, Integer> {
 
-    // Todas las ubicaciones por jerarquía
     List<LocalizacionGeografica> findByJerarquia(JerarquiaGeografica jerarquia);
 
-    // Buscar hijos de una localización
     List<LocalizacionGeografica> findByParent(LocalizacionGeografica parent);
 
-    // Buscar por nombre
     List<LocalizacionGeografica> findByNombreContainingIgnoreCase(String nombre);
 }

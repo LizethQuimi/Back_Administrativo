@@ -17,6 +17,8 @@ public class EntidadBancariaService {
         this.repo = repo;
     }
 
+    
+
     private EntidadBancariaDto toDto(EntidadBancaria entity) {
         EntidadBancariaDto dto = new EntidadBancariaDto();
         dto.setEntidadBancariaId(entity.getEntidadBancariaId());
@@ -38,12 +40,22 @@ public class EntidadBancariaService {
         entity.setCodigoInternacional(dto.getCodigoInternacional());
     }
 
+   
+
     public List<EntidadBancariaDto> listar() {
-        return repo.findAll().stream().map(this::toDto).toList();
+        return repo.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
-    public Optional<EntidadBancariaDto> buscarPorId(Integer entidadId) {
-        return repo.findById(entidadId).map(this::toDto);
+    public Optional<EntidadBancariaDto> buscarPorId(Integer id) {
+        return repo.findById(id).map(this::toDto);
+    }
+
+
+    public Optional<EntidadBancariaDto> buscarPorRuc(String ruc) {
+        return repo.findByRuc(ruc).map(this::toDto);
     }
 
     public EntidadBancariaDto crear(EntidadBancariaDto dto) {
@@ -53,8 +65,8 @@ public class EntidadBancariaService {
         return toDto(guardada);
     }
 
-    public Optional<EntidadBancariaDto> actualizar(Integer entidadId, EntidadBancariaDto dto) {
-        return repo.findById(entidadId)
+    public Optional<EntidadBancariaDto> actualizar(Integer id, EntidadBancariaDto dto) {
+        return repo.findById(id)
                 .map(existente -> {
                     updateEntityFromDto(dto, existente);
                     EntidadBancaria guardada = repo.save(existente);
@@ -62,11 +74,12 @@ public class EntidadBancariaService {
                 });
     }
 
-    public boolean eliminar(Integer entidadId) {
-        if (!repo.existsById(entidadId)) {
-            return false;
-        }
-        repo.deleteById(entidadId);
-        return true;
+    public boolean eliminar(Integer id) {
+        return repo.findById(id)
+                .map(ent -> {
+                    repo.delete(ent);
+                    return true;
+                })
+                .orElse(false);
     }
 }

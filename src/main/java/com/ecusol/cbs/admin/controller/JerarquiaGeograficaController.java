@@ -19,13 +19,11 @@ public class JerarquiaGeograficaController {
         this.jerarquiaService = jerarquiaService;
     }
 
-    // GET /api/admin/jerarquias
     @GetMapping
     public ResponseEntity<List<JerarquiaGeograficaDto>> listarJerarquias() {
         return ResponseEntity.ok(jerarquiaService.listar());
     }
 
-    // GET /api/admin/jerarquias/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerJerarquia(@PathVariable Integer id) {
         return jerarquiaService.buscarPorId(id)
@@ -33,20 +31,17 @@ public class JerarquiaGeograficaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // GET /api/admin/jerarquias/pais/{paisId}
     @GetMapping("/pais/{paisId}")
     public ResponseEntity<List<JerarquiaGeograficaDto>> listarPorPais(@PathVariable Integer paisId) {
         return ResponseEntity.ok(jerarquiaService.listarPorPais(paisId));
     }
 
-    // POST /api/admin/jerarquias
     @PostMapping
     public ResponseEntity<JerarquiaGeograficaDto> crearJerarquia(@RequestBody JerarquiaGeograficaDto dto) {
         JerarquiaGeograficaDto creada = jerarquiaService.crear(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
-    // PUT /api/admin/jerarquias/{id}
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarJerarquia(@PathVariable Integer id,
                                                  @RequestBody JerarquiaGeograficaDto dto) {
@@ -55,7 +50,6 @@ public class JerarquiaGeograficaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // DELETE /api/admin/jerarquias/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarJerarquia(@PathVariable Integer id) {
         boolean eliminado = jerarquiaService.eliminar(id);

@@ -10,9 +10,7 @@ import java.util.List;
 @Repository
 public interface JerarquiaGeograficaRepository extends JpaRepository<JerarquiaGeografica, Integer> {
 
-    // Todas las jerarquías por país
     List<JerarquiaGeografica> findByPais(Pais pais);
 
-    // Filtrar por nivel de jerarquía (1: Provincia, 2: Cantón, 3: Parroquia…)
     List<JerarquiaGeografica> findByNivel(Integer nivel);
 }

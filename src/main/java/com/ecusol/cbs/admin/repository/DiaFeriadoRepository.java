@@ -12,15 +12,13 @@ import java.util.List;
 @Repository
 public interface DiaFeriadoRepository extends JpaRepository<DiaFeriado, Integer> {
 
-    // Feriados nacionales
+    
     List<DiaFeriado> findByPais(Pais pais);
 
-    // Feriados por ubicación geográfica
+    
     List<DiaFeriado> findByLocalizacionGeografica(LocalizacionGeografica loc);
 
-    // Feriado en una fecha específica
     List<DiaFeriado> findByFecha(LocalDate fecha);
 
-    // Feriado por país + fecha
     List<DiaFeriado> findByPaisAndFecha(Pais pais, LocalDate fecha);
 }

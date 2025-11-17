@@ -17,6 +17,8 @@ public class PaisService {
         this.repo = repo;
     }
 
+    
+
     private PaisDto toDto(Pais entity) {
         PaisDto dto = new PaisDto();
         dto.setPaisId(entity.getPaisId());
@@ -34,6 +36,8 @@ public class PaisService {
         entity.setCodigoNumerico(dto.getCodigoNumerico());
     }
 
+
+
     public List<PaisDto> listar() {
         return repo.findAll()
                 .stream()
@@ -41,8 +45,18 @@ public class PaisService {
                 .toList();
     }
 
-    public Optional<PaisDto> buscarPorId(Integer paisId) {
-        return repo.findById(paisId).map(this::toDto);
+    public Optional<PaisDto> buscarPorId(Integer id) {
+        return repo.findById(id).map(this::toDto);
+    }
+
+
+    public Optional<PaisDto> buscarPorNombre(String nombre) {
+        return repo.findByNombreIgnoreCase(nombre).map(this::toDto);
+    }
+
+   
+    public Optional<PaisDto> buscarPorIsoAlpha2(String iso) {
+        return repo.findByIsoAlpha2(iso).map(this::toDto);
     }
 
     public PaisDto crear(PaisDto dto) {
@@ -52,8 +66,8 @@ public class PaisService {
         return toDto(guardado);
     }
 
-    public Optional<PaisDto> actualizar(Integer paisId, PaisDto dto) {
-        return repo.findById(paisId)
+    public Optional<PaisDto> actualizar(Integer id, PaisDto dto) {
+        return repo.findById(id)
                 .map(existente -> {
                     updateEntityFromDto(dto, existente);
                     Pais guardado = repo.save(existente);
@@ -61,11 +75,12 @@ public class PaisService {
                 });
     }
 
-    public boolean eliminar(Integer paisId) {
-        if (!repo.existsById(paisId)) {
-            return false;
-        }
-        repo.deleteById(paisId);
-        return true;
+    public boolean eliminar(Integer id) {
+        return repo.findById(id)
+                .map(pais -> {
+                    repo.delete(pais);
+                    return true;
+                })
+                .orElse(false);
     }
 }
