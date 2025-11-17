@@ -20,7 +20,7 @@ public class DiaFeriado {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paisId", nullable = false)
-    private Pais pais;   // <<--- IMPORTANTE: tipo Pais
+    private Pais pais;  
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "localizacionGeograficaId")

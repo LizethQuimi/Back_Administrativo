@@ -19,13 +19,13 @@ public class PaisController {
         this.paisService = paisService;
     }
 
-    // GET /api/admin/paises
+    
     @GetMapping
     public ResponseEntity<List<PaisDto>> listarPaises() {
         return ResponseEntity.ok(paisService.listar());
     }
 
-    // GET /api/admin/paises/{id}
+
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPais(@PathVariable Integer id) {
         return paisService.buscarPorId(id)
@@ -33,7 +33,7 @@ public class PaisController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // GET /api/admin/paises/buscar?nombre=ecuador
+  
     @GetMapping("/buscar")
     public ResponseEntity<?> buscarPorNombre(@RequestParam String nombre) {
         return paisService.buscarPorNombre(nombre)
@@ -41,7 +41,7 @@ public class PaisController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // GET /api/admin/paises/iso/{iso}
+    
     @GetMapping("/iso/{iso}")
     public ResponseEntity<?> buscarPorIso(@PathVariable String iso) {
         return paisService.buscarPorIsoAlpha2(iso)
@@ -49,14 +49,14 @@ public class PaisController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // POST /api/admin/paises
+ 
     @PostMapping
     public ResponseEntity<PaisDto> crearPais(@RequestBody PaisDto dto) {
         PaisDto creado = paisService.crear(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 
-    // PUT /api/admin/paises/{id}
+    
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarPais(@PathVariable Integer id,
                                             @RequestBody PaisDto dto) {
@@ -65,7 +65,7 @@ public class PaisController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // DELETE /api/admin/paises/{id}
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPais(@PathVariable Integer id) {
         boolean eliminado = paisService.eliminar(id);

@@ -28,7 +28,7 @@ public class Pais {
     @Column(name = "codigoNumerico", length = 4)
     private String codigoNumerico;
 
-    // Constructor solo con la PK (lo usa el service: new Pais(id))
+    
     public Pais(Integer paisId) {
         this.paisId = paisId;
     }

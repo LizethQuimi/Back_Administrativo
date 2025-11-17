@@ -11,13 +11,11 @@ import java.util.Optional;
 @Service
 public class PaisService {
 
-    private final PaisRepository paisRepository;
+    private final PaisRepository repo;
 
-    public PaisService(PaisRepository paisRepository) {
-        this.paisRepository = paisRepository;
+    public PaisService(PaisRepository repo) {
+        this.repo = repo;
     }
-
-    // ---------- Mappers ----------
 
     private PaisDto toDto(Pais entity) {
         PaisDto dto = new PaisDto();
@@ -36,51 +34,38 @@ public class PaisService {
         entity.setCodigoNumerico(dto.getCodigoNumerico());
     }
 
-    // ---------- Métodos públicos ----------
-
     public List<PaisDto> listar() {
-        return paisRepository.findAll()
+        return repo.findAll()
                 .stream()
                 .map(this::toDto)
                 .toList();
     }
 
     public Optional<PaisDto> buscarPorId(Integer paisId) {
-        return paisRepository.findById(paisId)
-                .map(this::toDto);
-    }
-
-    public Optional<PaisDto> buscarPorNombre(String nombre) {
-        return paisRepository.findByNombreIgnoreCase(nombre)
-                .map(this::toDto);
-    }
-
-    public Optional<PaisDto> buscarPorIsoAlpha2(String isoAlpha2) {
-        return paisRepository.findByIsoAlpha2(isoAlpha2)
-                .map(this::toDto);
+        return repo.findById(paisId).map(this::toDto);
     }
 
     public PaisDto crear(PaisDto dto) {
         Pais entity = new Pais();
         updateEntityFromDto(dto, entity);
-        Pais guardado = paisRepository.save(entity);
+        Pais guardado = repo.save(entity);
         return toDto(guardado);
     }
 
     public Optional<PaisDto> actualizar(Integer paisId, PaisDto dto) {
-        return paisRepository.findById(paisId)
+        return repo.findById(paisId)
                 .map(existente -> {
                     updateEntityFromDto(dto, existente);
-                    Pais guardado = paisRepository.save(existente);
+                    Pais guardado = repo.save(existente);
                     return toDto(guardado);
                 });
     }
 
     public boolean eliminar(Integer paisId) {
-        if (!paisRepository.existsById(paisId)) {
+        if (!repo.existsById(paisId)) {
             return false;
         }
-        paisRepository.deleteById(paisId);
+        repo.deleteById(paisId);
         return true;
     }
 }

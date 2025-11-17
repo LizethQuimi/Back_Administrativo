@@ -11,10 +11,10 @@ import java.util.Optional;
 @Service
 public class EntidadBancariaService {
 
-    private final EntidadBancariaRepository entidadRepository;
+    private final EntidadBancariaRepository repo;
 
-    public EntidadBancariaService(EntidadBancariaRepository entidadRepository) {
-        this.entidadRepository = entidadRepository;
+    public EntidadBancariaService(EntidadBancariaRepository repo) {
+        this.repo = repo;
     }
 
     private EntidadBancariaDto toDto(EntidadBancaria entity) {
@@ -39,43 +39,34 @@ public class EntidadBancariaService {
     }
 
     public List<EntidadBancariaDto> listar() {
-        return entidadRepository.findAll()
-                .stream()
-                .map(this::toDto)
-                .toList();
+        return repo.findAll().stream().map(this::toDto).toList();
     }
 
     public Optional<EntidadBancariaDto> buscarPorId(Integer entidadId) {
-        return entidadRepository.findById(entidadId)
-                .map(this::toDto);
-    }
-
-    public Optional<EntidadBancariaDto> buscarPorRuc(String ruc) {
-        return entidadRepository.findByRuc(ruc)
-                .map(this::toDto);
+        return repo.findById(entidadId).map(this::toDto);
     }
 
     public EntidadBancariaDto crear(EntidadBancariaDto dto) {
         EntidadBancaria entity = new EntidadBancaria();
         updateEntityFromDto(dto, entity);
-        EntidadBancaria guardada = entidadRepository.save(entity);
+        EntidadBancaria guardada = repo.save(entity);
         return toDto(guardada);
     }
 
     public Optional<EntidadBancariaDto> actualizar(Integer entidadId, EntidadBancariaDto dto) {
-        return entidadRepository.findById(entidadId)
+        return repo.findById(entidadId)
                 .map(existente -> {
                     updateEntityFromDto(dto, existente);
-                    EntidadBancaria guardada = entidadRepository.save(existente);
+                    EntidadBancaria guardada = repo.save(existente);
                     return toDto(guardada);
                 });
     }
 
     public boolean eliminar(Integer entidadId) {
-        if (!entidadRepository.existsById(entidadId)) {
+        if (!repo.existsById(entidadId)) {
             return false;
         }
-        entidadRepository.deleteById(entidadId);
+        repo.deleteById(entidadId);
         return true;
     }
 }
